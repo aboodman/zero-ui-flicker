@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "todos": {
+      "row": {
+        "update": {}
+      }
+    }
+  },
+  "schema": {
+    "version": 1,
+    "tables": {
+      "todos": {
+        "tableName": "todos",
+        "primaryKey": [
+          "id"
+        ],
+        "columns": {
+          "checked": {
+            "type": "boolean",
+            "optional": false
+          },
+          "createdAt": {
+            "type": "string",
+            "optional": false
+          },
+          "id": {
+            "type": "string",
+            "optional": false
+          },
+          "name": {
+            "type": "string",
+            "optional": false
+          },
+          "updatedAt": {
+            "type": "string",
+            "optional": false
+          }
+        },
+        "relationships": {}
+      }
+    }
+  }
+}
