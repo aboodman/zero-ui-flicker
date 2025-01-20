@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UI Flicker Issue Reproduction
 
-## Getting Started
-
-First, run the development server:
+This is a minimal reproducible example of a UI flicker issue in a Next.js 15 project. The project was created using:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx create-next-app@latest
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+All default configurations were selected during setup, except Turbopack was disabled.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env` file in the root directory with the following structure:
 
-## Learn More
+```env
+ZERO_UPSTREAM_DB="postgresql://user:password@127.0.0.1:5430/todos"
+ZERO_CVR_DB="postgresql://user:password@127.0.0.1:5430/todos_cvr"
+ZERO_CHANGE_DB="postgresql://user:password@127.0.0.1:5430/todos_cdb"
+ZERO_AUTH_SECRET="secretkey"
+ZERO_REPLICA_FILE="/tmp/zstart_replica.db"
+NEXT_PUBLIC_SERVER="http://localhost:4848"
+```
 
-To learn more about Next.js, take a look at the following resources:
+Note: Replace the credentials and secrets with your own values.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Running the Project
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Execute the following commands in separate terminals:
 
-## Deploy on Vercel
+1. Start the database:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm run dev:db-up
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Start the zero-cache server:
+
+   ```bash
+   npm run dev:zero-cache
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Reproducing the Issue
+
+1. Open your browser's Developer Console
+2. Navigate between the "Todos 1" and "Todos 2" pages using the sidebar
+3. Observe the console logs - you should see instances where the todos array is empty `[]`
+
+Note: This issue occurs frequently but may not be reproducible 100% of the time.
